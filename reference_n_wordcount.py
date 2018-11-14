@@ -103,11 +103,23 @@ for index, row in file.iterrows():
         if not is_null(row[questions[i]]):
             length += len(row[questions[i]])
 
-    new_row = [name, grade, app_cycle, app_type, reference_binary, length]
+    # Binary Variable - Video
+    video = row[questions[28]]
+    video_binary = 0
+    if "Yes, I would like to send a video to uniteuw@uw.edu" in video:
+        video_binary = 1
+
+    # Binary Variable - Returning Student
+    returning_student = row[questions[3]]
+    returning_binary = 0
+    if "I applied to Unite UW before but I didn't get accepted." in returning_student:
+        returning_binary = 1
+
+    new_row = [name, grade, app_cycle, app_type, reference_binary, length, video_binary, returning_binary]
     new_data.append(new_row)
 
 # Export the new data
 index = [i for i in range(len(file))]
-columns = ["Name", "Grade", "Cycle", "Application Type", "Reference Exists", "Length"]
+columns = ["Name", "Grade", "Cycle", "Application Type", "Reference Exists", "Length", "Video", "Returning Student"]
 new_file = pd.DataFrame(data = new_data, index=index, columns=columns)
 new_file.to_csv(path_or_buf="formatted_data_set.csv")
